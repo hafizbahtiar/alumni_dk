@@ -1,4 +1,4 @@
-import 'package:alumni_dk/constant/app_image.dart';
+import 'package:alumni_dk/core/constant/app_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {

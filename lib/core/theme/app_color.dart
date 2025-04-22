@@ -1,4 +1,4 @@
-import 'package:alumni_dk/theme/app_pallete.dart';
+import 'package:alumni_dk/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 ColorScheme appColor(bool isDarkMode) {

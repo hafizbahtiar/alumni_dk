@@ -1,5 +1,5 @@
-import 'package:alumni_dk/theme/app_color.dart';
-import 'package:alumni_dk/theme/app_pallete.dart';
+import 'package:alumni_dk/core/theme/app_color.dart';
+import 'package:alumni_dk/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 ThemeData appThemeData(BuildContext context, bool isDarkMode) {

@@ -1,7 +1,7 @@
-import 'package:alumni_dk/appearance_provider.dart';
-import 'package:alumni_dk/main_page.dart';
-import 'package:alumni_dk/routes/generate_route.dart';
-import 'package:alumni_dk/theme/app_theme.dart';
+import 'package:alumni_dk/login_page.dart';
+import 'package:alumni_dk/providers/appearance_provider.dart';
+import 'package:alumni_dk/core/routes/generate_route.dart';
+import 'package:alumni_dk/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: themeMode,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
-      home: MainPage(),
+      home: LoginPage(),
     );
   }
 }
