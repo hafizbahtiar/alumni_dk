@@ -4,6 +4,7 @@ import 'package:alumni_dk/core/network/api_client.dart';
 import 'package:alumni_dk/modules/auth/providers/register_provider.dart';
 import 'package:alumni_dk/modules/auth/repos/register_repo.dart';
 import 'package:alumni_dk/modules/auth/services/register_service.dart';
+import 'package:alumni_dk/shared/widgets/my_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +31,25 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  Future<void> _signUp() async {
+  Future<void> _signUp(RegisterProvider provider) async {
     if (!_formKey.currentState!.validate()) return;
+
+    final isSuccess = await provider.register(
+      _emailController.text,
+      _nameController.text,
+      _passwordController.text,
+      _confirmPasswordController.text,
+    );
+
+    if (!isSuccess && mounted) {
+      MySnackBar.showError(context, provider.message);
+      return;
+    }
+
+    if (mounted) {
+      MySnackBar.showSuccess(context, provider.message);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -114,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: provider.isLoading ? null : _signUp,
+                        onPressed: provider.isLoading ? null : () => _signUp(provider),
                         child:
                             provider.isLoading
                                 ? const SizedBox(

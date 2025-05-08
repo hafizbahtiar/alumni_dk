@@ -7,14 +7,21 @@ class RegisterProvider with ChangeNotifier {
 
   RegisterProvider(this._registerRepo);
 
+  String _message = '';
   String _errorMessage = '';
   bool _isLoading = false;
 
+  String get message => _message;
   String get errorMessage => _errorMessage;
   bool get isLoading => _isLoading;
 
   void _setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setMessage(String message) {
+    _message = message;
     notifyListeners();
   }
 
@@ -28,10 +35,16 @@ class RegisterProvider with ChangeNotifier {
       _errorMessage = '';
       notifyListeners();
     }
+
+    if (_message.isNotEmpty) {
+      _message = '';
+      notifyListeners();
+    }
   }
 
   void reset() {
     _isLoading = false;
+    _message = '';
     _errorMessage = '';
     notifyListeners();
   }
@@ -53,12 +66,18 @@ class RegisterProvider with ChangeNotifier {
     try {
       final user = UserModel(name: name, email: email).forRegister(password, confirmPassword);
       final result = await _registerRepo.register(user);
+      final message = result.message;
 
-      if (result['status'] == true) {
+      if (result.status == true) {
+        _setMessage(message ?? 'Registration successful');
         _setLoading(false);
         return true;
       } else {
-        _setError(result['message'] ?? 'Login failed');
+        final validationErrors = result.errors?['validation'] as Map<String, dynamic>?;
+        final firstError = validationErrors?.values.first ?? result.message ?? 'Login failed';
+
+        _setMessage(message ?? 'Registration failed');
+        _setError(firstError);
         _setLoading(false);
         return false;
       }

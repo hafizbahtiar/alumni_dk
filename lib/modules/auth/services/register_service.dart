@@ -11,7 +11,7 @@ class RegisterService {
 
   Future<ApiResponse> register(UserModel user) async {
     try {
-      final endpoint = ApiEndpoint.v1.auth.login;
+      final endpoint = ApiEndpoint.v1.auth.register;
       final response = await _apiClient.post(endpoint, body: user.toRegisterJson());
 
       final statusCode = response.statusCode;
@@ -31,7 +31,8 @@ class RegisterService {
           final error = jsonDecode(body);
           final message =
               error is Map && error['message'] != null ? error['message'] : 'Login failed with status $statusCode';
-          return ApiResponse.error(message);
+          final errors = error is Map && error['errors'] != null ? error['errors'] : null;
+          return ApiResponse.error(message, errors: errors);
         } catch (_) {
           return ApiResponse.error('Login failed with status $statusCode');
         }
