@@ -4,6 +4,7 @@ import 'package:alumni_dk/core/routes/name_route.dart';
 import 'package:alumni_dk/modules/auth/providers/login_provider.dart';
 import 'package:alumni_dk/modules/auth/repos/login_repo.dart';
 import 'package:alumni_dk/modules/auth/services/login_service.dart';
+import 'package:alumni_dk/shared/widgets/my_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,8 +37,15 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _signIn() async {
+  Future<void> _signIn(LoginProvider provider) async {
     if (!_formKey.currentState!.validate()) return;
+
+    final isSuccess = await provider.login(_emailController.text, _passwordController.text);
+
+    if (!mounted) return;
+
+    MySnackBar.show(context, provider.message, type: isSuccess ? SnackBarType.success : SnackBarType.error);
+    if (isSuccess) Navigator.pushNamed(context, NameRoute.home);
   }
 
   @override
@@ -122,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                      if (provider.errorMessage.isNotEmpty)
+                      if (provider.message.isNotEmpty)
                         Container(
                           margin: const EdgeInsets.only(top: 10, bottom: 10),
                           padding: const EdgeInsets.all(8),
@@ -132,14 +140,14 @@ class _LoginPageState extends State<LoginPage> {
                             border: Border.all(color: Colors.red.shade200),
                           ),
                           child: Text(
-                            provider.errorMessage,
+                            provider.message,
                             style: TextStyle(color: Colors.red.shade800),
                             textAlign: TextAlign.center,
                           ),
                         ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: provider.isLoading ? null : _signIn,
+                        onPressed: provider.isLoading ? null : () => _signIn(provider),
                         child:
                             provider.isLoading
                                 ? const SizedBox(

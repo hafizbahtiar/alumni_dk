@@ -16,14 +16,14 @@ class Validator {
     return null;
   }
 
-  static String? validatePassword(String? value) {
+  static String? validatePassword(String? value, {bool validLength = false}) {
     // Check if the value is null or empty
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
 
     // Check if the password length is less than 6 characters
-    if (value.length < 6) {
+    if (value.length < 6 && validLength == true) {
       return 'Password must be at least 6 characters long';
     }
     return null;

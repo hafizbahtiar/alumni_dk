@@ -15,7 +15,7 @@ class RegisterRepo {
         return response;
       }
 
-      return ApiResponse.error(response.message ?? 'Login failed', errors: response.errors);
+      return ApiResponse.error(response.message ?? 'Register failed', errors: response.errors);
     } catch (e) {
       return ApiResponse.error(e.toString());
     }

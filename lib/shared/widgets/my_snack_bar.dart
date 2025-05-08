@@ -1,39 +1,26 @@
 import 'package:flutter/material.dart';
 
+enum SnackBarType { success, error, info, warning }
+
 class MySnackBar {
-  static void showSuccess(BuildContext context, String message, {Duration? duration}) {
-    _showSnackBar(context, message, Colors.green, Icons.check_circle, duration);
-  }
-
-  static void showError(BuildContext context, String message, {Duration? duration}) {
-    _showSnackBar(context, message, Colors.red, Icons.error, duration);
-  }
-
-  static void showInfo(BuildContext context, String message, {Duration? duration}) {
-    _showSnackBar(context, message, Colors.blue, Icons.info_outline, duration);
-  }
-
-  static void showWarning(BuildContext context, String message, {Duration? duration}) {
-    _showSnackBar(context, message, Colors.orange, Icons.warning_amber_rounded, duration);
-  }
-
-  static void _showSnackBar(
+  static void show(
     BuildContext context,
-    String message,
-    Color backgroundColor,
-    IconData icon, [
-    Duration? duration,
-  ]) {
+    String message, {
+    required SnackBarType type,
+    Duration duration = const Duration(seconds: 3),
+  }) {
+    final config = _getConfig(type);
+
     final snackBar = SnackBar(
-      backgroundColor: backgroundColor,
-      duration: duration ?? const Duration(seconds: 3),
+      backgroundColor: config.color,
+      duration: duration,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       showCloseIcon: true,
       content: Row(
-        spacing: 8.0,
         children: [
-          Icon(icon, color: Colors.white),
+          Icon(config.icon, color: Colors.white),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               message,
@@ -46,7 +33,28 @@ class MySnackBar {
       ),
     );
 
-    ScaffoldMessenger.of(context).clearSnackBars(); // optional: avoid stacking
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(snackBar);
   }
+
+  static _SnackBarConfig _getConfig(SnackBarType type) {
+    switch (type) {
+      case SnackBarType.success:
+        return _SnackBarConfig(Colors.green, Icons.check_circle);
+      case SnackBarType.error:
+        return _SnackBarConfig(Colors.red, Icons.error);
+      case SnackBarType.info:
+        return _SnackBarConfig(Colors.blue, Icons.info_outline);
+      case SnackBarType.warning:
+        return _SnackBarConfig(Colors.orange, Icons.warning_amber_rounded);
+    }
+  }
+}
+
+class _SnackBarConfig {
+  final Color color;
+  final IconData icon;
+
+  const _SnackBarConfig(this.color, this.icon);
 }

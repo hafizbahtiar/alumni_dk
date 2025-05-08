@@ -7,10 +7,10 @@ class LoginProvider with ChangeNotifier {
 
   LoginProvider(this._loginRepo);
 
-  String _errorMessage = '';
+  String _message = '';
   bool _isLoading = false;
 
-  String get errorMessage => _errorMessage;
+  String get message => _message;
   bool get isLoading => _isLoading;
 
   void _setLoading(bool value) {
@@ -18,47 +18,42 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _setError(String message) {
-    _errorMessage = message;
+  void _setMessage(String message) {
+    _message = message;
     notifyListeners();
-  }
-
-  void clearError() {
-    if (_errorMessage.isNotEmpty) {
-      _errorMessage = '';
-      notifyListeners();
-    }
   }
 
   void reset() {
     _isLoading = false;
-    _errorMessage = '';
+    _message = '';
     notifyListeners();
   }
 
   Future<bool> login(String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
-      _setError('Email and password cannot be empty');
+      _setMessage('Email and password cannot be empty');
       return false;
     }
 
-    clearError();
+    _setMessage('');
     _setLoading(true);
 
     try {
       final user = UserModel(email: email).withPassword(password);
       final result = await _loginRepo.login(user);
+      final message = result.message;
 
-      if (result['status'] == true) {
+      if (result.status == true) {
+        _setMessage(message ?? 'Login successful');
         _setLoading(false);
         return true;
       } else {
-        _setError(result['message'] ?? 'Login failed');
+        _setMessage(message ?? 'Login failed');
         _setLoading(false);
         return false;
       }
     } catch (e) {
-      _setError(e.toString());
+      _setMessage(e.toString());
       _setLoading(false);
       return false;
     }

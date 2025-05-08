@@ -41,15 +41,10 @@ class _RegisterPageState extends State<RegisterPage> {
       _confirmPasswordController.text,
     );
 
-    if (!isSuccess && mounted) {
-      MySnackBar.showError(context, provider.message);
-      return;
-    }
+    if (!mounted) return;
 
-    if (mounted) {
-      MySnackBar.showSuccess(context, provider.message);
-      Navigator.pop(context);
-    }
+    MySnackBar.show(context, provider.message, type: isSuccess ? SnackBarType.success : SnackBarType.error);
+    if (isSuccess) Navigator.pop(context);
   }
 
   @override
@@ -121,12 +116,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         validator: (value) => Validator.validateConfirmPassword(_passwordController.text, value),
                       ),
                       const SizedBox(height: 10),
-                      if (provider.errorMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
+                      if (provider.message.isNotEmpty)
+                        Container(
+                          margin: const EdgeInsets.only(top: 10, bottom: 10),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.red.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.red.shade200),
+                          ),
                           child: Text(
-                            provider.errorMessage,
-                            style: const TextStyle(color: Colors.red),
+                            provider.message,
+                            style: TextStyle(color: Colors.red.shade800),
                             textAlign: TextAlign.center,
                           ),
                         ),
