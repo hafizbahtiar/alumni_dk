@@ -1,4 +1,4 @@
-import 'package:alumni_dk/providers/appearance_provider.dart';
+import 'package:alumni_dk/shared/providers/appearance_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 

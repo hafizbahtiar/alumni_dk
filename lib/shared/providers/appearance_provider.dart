@@ -1,4 +1,4 @@
-import 'package:alumni_dk/core/constant/name_shared_prefs.dart';
+import 'package:alumni_dk/core/constant/prefs_name.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,12 +25,12 @@ class AppearanceProvider extends ChangeNotifier {
   // Save darkMode to SharedPreferences
   Future<void> _saveDarkModeToPrefs(bool value) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(NameSharedPrefs.isDarkMode, value);
+    await prefs.setBool(PrefsName.isDarkMode, value);
   }
 
   // Retrieve darkMode setting from SharedPreferences
   Future<bool> _getDarkModeFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(NameSharedPrefs.isDarkMode) ?? false;
+    return prefs.getBool(PrefsName.isDarkMode) ?? false;
   }
 }

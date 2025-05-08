@@ -1,5 +1,6 @@
-import 'package:alumni_dk/login_page.dart';
-import 'package:alumni_dk/providers/appearance_provider.dart';
+import 'package:alumni_dk/core/constant/global_key.dart';
+import 'package:alumni_dk/modules/auth/pages/login_page.dart';
+import 'package:alumni_dk/shared/providers/appearance_provider.dart';
 import 'package:alumni_dk/core/routes/generate_route.dart';
 import 'package:alumni_dk/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _MyAppState extends State<MyApp> {
       theme: appThemeData(context, false),
       darkTheme: appThemeData(context, true),
       themeMode: themeMode,
+      navigatorKey: navigatorKey,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
       home: LoginPage(),

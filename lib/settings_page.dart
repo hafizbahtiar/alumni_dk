@@ -1,4 +1,4 @@
-import 'package:alumni_dk/providers/appearance_provider.dart';
+import 'package:alumni_dk/shared/providers/appearance_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
