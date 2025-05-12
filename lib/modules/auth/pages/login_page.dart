@@ -122,10 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                           const Text('Remember me'),
                           const Spacer(),
                           TextButton(
-                            onPressed: () {
-                              // Handle forgot password
-                              _showForgotPasswordDialog();
-                            },
+                            onPressed: () => Navigator.pushNamed(context, NameRoute.forgotPassword),
                             child: const Text('Forgot Password?'),
                           ),
                         ],
@@ -172,92 +169,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       ),
-    );
-  }
-
-  void _showForgotPasswordDialog() {
-    final TextEditingController emailController = TextEditingController();
-    bool isSubmitting = false;
-
-    if (_emailController.text.isNotEmpty) {
-      emailController.text = _emailController.text;
-    }
-
-    showDialog(
-      context: context,
-      builder:
-          (context) => StatefulBuilder(
-            builder:
-                (context, setDialogState) => AlertDialog(
-                  title: const Text('Reset Password'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('Enter your email to receive a password reset link'),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-                          prefixIcon: const Icon(Icons.email),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-                    ElevatedButton(
-                      onPressed:
-                          isSubmitting
-                              ? null
-                              : () async {
-                                if (emailController.text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Please enter your email'),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                  return;
-                                }
-
-                                setDialogState(() {
-                                  isSubmitting = true;
-                                });
-
-                                try {
-                                  // await _supabase.auth.resetPasswordForEmail(emailController.text.trim());
-                                  // if (context.mounted) {
-                                  //   Navigator.pop(context);
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //     const SnackBar(
-                                  //       content: Text('Password reset email sent. Please check your inbox.'),
-                                  //       backgroundColor: Colors.green,
-                                  //     ),
-                                  //   );
-                                  // }
-                                } catch (e) {
-                                  setDialogState(() {
-                                    isSubmitting = false;
-                                  });
-
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Error: ${e.toString()}'), backgroundColor: Colors.red),
-                                    );
-                                  }
-                                }
-                              },
-                      child:
-                          isSubmitting
-                              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                              : const Text('Send Reset Link'),
-                    ),
-                  ],
-                ),
-          ),
     );
   }
 }

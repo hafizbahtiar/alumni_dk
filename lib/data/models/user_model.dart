@@ -95,6 +95,11 @@ class UserModel {
     return {'name': name, 'email': email, 'password': _password, 'confirm_password': _confirmPassword};
   }
 
+  /// Convert to JSON specifically for registration endpoint
+  Map<String, dynamic> toEmailJson() {
+    return {'email': email};
+  }
+
   /// Convert to JSON specifically for login endpoint
   Map<String, dynamic> toLoginJson() {
     return {'email': email, 'password': _password};
